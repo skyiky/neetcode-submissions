@@ -1,0 +1,24 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        # for tree rooted at node, returns the smallest and largest value in the tree and if the tree is a valid BST
+        def dfs(node: Optional[TreeNode]) -> tuple[valid: bool, _min: int, _max: int]:
+            if not node:
+                return (True, float('inf'), float('-inf'))
+
+            lvalid, lmin, lmax = dfs(node.left)
+            rvalid, rmin, rmax = dfs(node.right)
+            if lvalid and rvalid and lmax < node.val < rmin:
+                return (True, min(lmin, node.val), max(rmax, node.val))
+            else:
+                return (False, float('-inf'), float('inf'))
+        
+        return dfs(root)[0]
+
+        
